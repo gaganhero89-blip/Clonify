@@ -6,6 +6,7 @@ RUN apt-get update \
         ffmpeg \
         curl \
         gnupg \
+        git \
     && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y --no-install-recommends nodejs \
     && apt-get clean \
