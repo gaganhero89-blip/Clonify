@@ -16,7 +16,9 @@ from Clonify.plugins.tools.clone import restart_bots
 
 async def init():
     if not config.STRING1:
-        LOGGER(__name__).error("String Session not filled, please provide a valid session.")
+        LOGGER(__name__).error(
+            "String Session not filled! Please add STRING1 in environment variables."
+        )
         exit()
 
     await sudo()
@@ -33,9 +35,9 @@ async def init():
 
     await app.start()
 
-    for all_module in ALL_MODULES:
-        importlib.import_module("Clonify.plugins" + all_module)
-    LOGGER("Clonify.plugins").info("𝐀𝐥𝐥 𝐅𝐞𝐚𝐭𝐮𝐫𝐞𝐬 𝐋𝐨𝐚𝐝𝐞𝐝 𝐁𝐚𝐛𝐲🥳...")
+    for module in ALL_MODULES:
+        importlib.import_module("Clonify.plugins" + module)
+    LOGGER("Clonify.plugins").info("All Features Loaded 🎵")
 
     await userbot.start()
     await PRO.start()
@@ -43,8 +45,8 @@ async def init():
     try:
         await PRO.stream_call("https://te.legra.ph/file/29f784eb49d230ab62e9e.mp4")
     except NoActiveGroupCall:
-        LOGGER("Clonify").error(
-            "𝗣𝗹𝗭 𝗦𝗧𝗔𝗥𝗧 𝗬𝗢𝗨𝗥 𝗟𝗢𝗚 𝗚𝗥𝗢𝗨𝗣 𝗩𝗢𝗜𝗖𝗘𝗖𝗛𝗔𝗧\\𝗖𝗛𝗔𝗡𝗡𝗘𝗟\n\n𝗠𝗨𝗦𝗜𝗖 𝗕𝗢𝗧 𝗦𝗧𝗢𝗣........"
+        LOGGER("AdamMusicBot").error(
+            "Please START your LOG GROUP VOICE CHAT first!\n\nBot Stopping..."
         )
         exit()
     except Exception:
@@ -53,14 +55,17 @@ async def init():
     await PRO.decorators()
     await restart_bots()
 
-    LOGGER("Clonify").info(
-        "╔═════ஜ۩۞۩ஜ════╗\n  ☠︎︎𝗠𝗔𝗗𝗘 𝗕𝗬 𝗣𝗿𝗼𝗕𝗼t𝘀☠︎︎\n╚═════ஜ۩۞۩ஜ════╝"
+    LOGGER("AdamMusicBot").info(
+        "\n╔══════════════════════╗"
+        "\n║  🎵  ADAM MUSIC BOT  ║"
+        "\n║   Powered by Clonify ║"
+        "\n╚══════════════════════╝"
     )
 
     await idle()
     await app.stop()
     await userbot.stop()
-    LOGGER("Clonify").info("𝗦𝗧𝗢𝗣 𝗠𝗨𝗦𝗜𝗖🎻 𝗕𝗢𝗧..")
+    LOGGER("AdamMusicBot").info("Adam Music Bot stopped.")
 
 
 if __name__ == "__main__":
