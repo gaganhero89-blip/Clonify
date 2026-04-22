@@ -1,8 +1,5 @@
 import asyncio
 import importlib
-import os
-import threading
-from http.server import BaseHTTPRequestHandler, HTTPServer
 
 from pyrogram import idle
 from pytgcalls.exceptions import NoActiveGroupCall
@@ -16,33 +13,6 @@ from Clonify.utils.database import get_banned_users, get_gbanned
 from config import BANNED_USERS
 from Clonify.plugins.tools.clone import restart_bots
 
-
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-#  KEEP-ALIVE — Thread mein, asyncio se pehle
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-class _Handler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        self.send_response(200)
-        self.send_header("Content-Type", "text/html")
-        self.end_headers()
-        self.wfile.write(b"<h2>Clonify Music Bot is running!</h2>")
-
-    def log_message(self, format, *args):
-        pass
-
-
-def _keep_alive():
-    port = int(os.environ.get("PORT", 8080))
-    HTTPServer(("0.0.0.0", port), _Handler).serve_forever()
-
-
-threading.Thread(target=_keep_alive, daemon=True).start()
-
-
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-#  MAIN — original bilkul same
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 async def init():
     if not config.STRING1:
@@ -88,7 +58,6 @@ async def init():
     )
 
     await idle()
-
     await app.stop()
     await userbot.stop()
     LOGGER("Clonify").info("𝗦𝗧𝗢𝗣 𝗠𝗨𝗦𝗜𝗖🎻 𝗕𝗢𝗧..")
