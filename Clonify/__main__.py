@@ -18,9 +18,7 @@ from Clonify.plugins.tools.clone import restart_bots
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-#  KEEP-ALIVE SERVER — Render port binding fix
-#  Threading use kiya — asyncio loop ka wait nahi karta
-#  Port import hote hi turant open ho jaata hai
+#  KEEP-ALIVE — Thread mein, asyncio se pehle
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 class _Handler(BaseHTTPRequestHandler):
@@ -28,21 +26,18 @@ class _Handler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-Type", "text/html")
         self.end_headers()
-        self.wfile.write(b"<h2>Clonify Music Bot is running! &#127925;</h2>")
+        self.wfile.write(b"<h2>Clonify Music Bot is running!</h2>")
 
     def log_message(self, format, *args):
-        pass  # suppress access logs
+        pass
 
 
-def _start_keep_alive():
+def _keep_alive():
     port = int(os.environ.get("PORT", 8080))
-    server = HTTPServer(("0.0.0.0", port), _Handler)
-    server.serve_forever()
+    HTTPServer(("0.0.0.0", port), _Handler).serve_forever()
 
 
-# Start immediately — before asyncio loop
-_ka_thread = threading.Thread(target=_start_keep_alive, daemon=True)
-_ka_thread.start()
+threading.Thread(target=_keep_alive, daemon=True).start()
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
