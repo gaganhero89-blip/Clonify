@@ -13,36 +13,33 @@ from .logging import LOGGER
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-#  KEEP-ALIVE — Import hote hi port open ho jaata hai
-#  Threading use kiya — asyncio/bot ka wait nahi karta
-#  Render port scan: import → thread start → port open ✅
+#  KEEP-ALIVE — Render "No open ports" fix
+#  Threading: import hote hi port open — asyncio wait nahi
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-class _KeepAliveHandler(BaseHTTPRequestHandler):
+class _Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
-        self.send_header("Content-Type", "text/plain")
+        self.send_header("Content-Type", "text/html")
         self.end_headers()
-        self.wfile.write(b"Clonify Music Bot is running!")
-
-    def log_message(self, format, *args):
-        pass  # Suppress HTTP logs
+        self.wfile.write(
+            b"<h2>\xf0\x9f\x8e\xb5 Adam Music Bot is running!</h2>"
+        )
+    def log_message(self, *a):
+        pass
 
 
 def _run_server():
     port = int(os.environ.get("PORT", 8080))
-    server = HTTPServer(("0.0.0.0", port), _KeepAliveHandler)
-    LOGGER("KeepAlive").info(f"Server started on port {port} ✅")
-    server.serve_forever()
+    HTTPServer(("0.0.0.0", port), _Handler).serve_forever()
 
 
-# Immediately start in background thread
-_server_thread = threading.Thread(target=_run_server, daemon=True)
-_server_thread.start()
+threading.Thread(target=_run_server, daemon=True).start()
+LOGGER("AdamMusicBot").info("Keep-alive server started ✅")
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-#  ORIGINAL — bilkul same, koi change nahi
+#  BOT INIT
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 dirr()
