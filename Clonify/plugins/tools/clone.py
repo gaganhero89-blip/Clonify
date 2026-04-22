@@ -323,27 +323,6 @@ async def list_cloned_bots(client, message, _):
         logging.exception(e)
         await message.reply_text("An error occurred while listing cloned bots.")
 
-# -------------------------------
-# 🔥 SET ASSISTANT COMMAND
-# -------------------------------
-@Client.on_message(filters.command("setassistant"))
-async def set_assistant(client, message):
-    bot_id = client.me.id
-    owner_id = get_owner_id_from_db(bot_id)
-
-    # only owner allowed
-    if message.from_user.id != owner_id:
-        return await message.reply_text("Only bot owner can use this")
-
-    try:
-        assistant_id = int(message.command[1])
-    except:
-        return await message.reply_text("Usage: /setassistant <user_id>")
-
-    set_assistant_id(bot_id, assistant_id)
-
-    await message.reply_text(f"Assistant set to `{assistant_id}`")
-
 
 
 #total clone
@@ -363,24 +342,3 @@ async def list_cloned_bots(client, message, _):
     except Exception as e:
         logging.exception(e)
         await message.reply_text("An error occurred while listing cloned bots.")
-
-# -------------------------------
-# 🔥 SET ASSISTANT COMMAND
-# -------------------------------
-@Client.on_message(filters.command("setassistant"))
-async def set_assistant(client, message):
-    bot_id = client.me.id
-    owner_id = get_owner_id_from_db(bot_id)
-
-    # only owner allowed
-    if message.from_user.id != owner_id:
-        return await message.reply_text("Only bot owner can use this")
-
-    try:
-        assistant_id = int(message.command[1])
-    except:
-        return await message.reply_text("Usage: /setassistant <user_id>")
-
-    set_assistant_id(bot_id, assistant_id)
-
-    await message.reply_text(f"Assistant set to `{assistant_id}`")
